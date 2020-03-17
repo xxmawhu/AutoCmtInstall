@@ -16,21 +16,24 @@ import os
 
 
 def IsBOSSSetUp():
-    if "TESTRELEASEROOT" in os.environ :
+    if "TESTRELEASEROOT" in os.environ:
         return True
     else:
         return False
 
+
 def GetWorkArea():
     return os.environ['TESTRELEASEROOT'].split("TestRelease")[0]
+
 
 def GetBossVersion():
     BesArea = os.environ['BesArea']
     return BesArea.split(r"/")[-1]
 
+
 def GetTestRelease():
     if "TESTRELEASEROOT" in os.environ:
-        return os.environ["TESTRELEASEROOT"]+"/cmt/requirements" 
+        return os.environ["TESTRELEASEROOT"] + "/cmt/requirements"
     else:
         return ""
 

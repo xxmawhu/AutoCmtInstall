@@ -16,9 +16,9 @@ import GitSvc
 import CheckBOSS
 import RepoSet
 
-logging.basicConfig(level=logging.INFO,
-                    format='[%(levelname)s] %(message)s')
+logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
 logger = logging.getLogger(__name__)
+
 
 class ProcessRequire(object):
     def __init__(self):
@@ -34,10 +34,10 @@ class ProcessRequire(object):
         installed: set
            * elememt is a tuple, like (package-name, local-address)
         """
-        self._Repository={}
-        self._localAddress={}
-        self._install= set()
-    
+        self._Repository = {}
+        self._localAddress = {}
+        self._install = set()
+
     def AddRepository(self, repos):
         """
         repos: dir:
@@ -52,7 +52,7 @@ class ProcessRequire(object):
         f = open(requirement, 'r')
         for Line in f.readlines():
             LL = Line.split()
-            if len(LL) < 2 :
+            if len(LL) < 2:
                 continue
             if LL[0] != "use":
                 continue
@@ -60,10 +60,10 @@ class ProcessRequire(object):
             if packName not in self._Repository:
                 continue
             if len(LL) < 4:
-                localAdd=""
+                localAdd = ""
             else:
                 localAdd = LL[-1]
-            self._install.add((packName, localAdd));
+            self._install.add((packName, localAdd))
             try:
                 self._localAddress[packName].append(localAdd)
             except KeyError as e:
@@ -84,4 +84,3 @@ if __name__ == "__main__":
     processRequire = ProcessRequire()
     processRequire.AddRepository(RepoSet.remote)
     processRequire.Install('requirements')
-

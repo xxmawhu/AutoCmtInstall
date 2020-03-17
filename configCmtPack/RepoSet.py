@@ -1,11 +1,15 @@
 import os
 import ConfigParser
+
+
 class MyConfigParser(ConfigParser.ConfigParser):
     """set ConfigParser options for case sensitive."""
     def __init__(self, defaults=None):
-        ConfigParser.ConfigParser.__init__(self,defaults=defaults)
+        ConfigParser.ConfigParser.__init__(self, defaults=defaults)
+
     def optionxform(self, optionstr):
         return optionstr
+
 
 default = {
     "BeamInfoSvc": "https://github.com/xxmawhu/BeamInfoSvc.git",
@@ -20,6 +24,7 @@ default = {
     "DCListSvc": "https://github.com/xxmawhu/DCListSvc.git",
 }
 
+
 def initConfig(repoSet):
     local_config = MyConfigParser()
     local_config.add_section('Repository')
@@ -31,9 +36,11 @@ def initConfig(repoSet):
     with open(localFile, 'w') as configFile:
         local_config.write(configFile)
 
+
 def init(configfile):
     if not os.path.exists(configfile):
         initConfig(default)
+
 
 def ReadConfig(configfile):
     init(configfile)
@@ -43,6 +50,7 @@ def ReadConfig(configfile):
     for item in local_config.items("Repository"):
         d[item[0]] = item[1]
     return d
+
 
 localConfigFile = os.path.expanduser("~/.configCmtPack/repo")
 remote = ReadConfig(localConfigFile)

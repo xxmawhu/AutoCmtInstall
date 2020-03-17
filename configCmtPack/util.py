@@ -14,6 +14,7 @@
 # ====================================================
 import subprocess
 
+
 def getoutput(command):
     pr = subprocess.Popen(command,
                           shell=True,
@@ -28,4 +29,3 @@ def getoutput(command):
 
 if __name__ == "__main__":
     print(getoutput("ls"))
-

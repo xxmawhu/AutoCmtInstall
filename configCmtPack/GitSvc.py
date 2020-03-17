@@ -14,28 +14,29 @@ from util import getoutput
 import subprocess
 import logging
 import CheckBOSS
-logging.basicConfig(level=logging.INFO,
-                    format='[%(levelname)s] %(message)s')
+logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
 logger = logging.getLogger(__name__)
+
 
 class GitSvc(object):
     def __init__(self, workarea=""):
-        self._workarea= workarea
+        self._workarea = workarea
         self._remoteAddress = ""
         # self._localAddress = ""
         self._force = False
-    
+
     def SetWorkArea(self, workarea):
         self._workarea = workarea
+
     def Force(self):
         self._force = True
 
     def SetRemoteAddress(self, remoteAddress):
         self._remoteAddress = remoteAddress.strip()
         self._packName = remoteAddress.split(r"/")[-1].split('.')[0]
-    
+
     def WriteRequirement(self, packagename, localAddress):
-        testRelease = CheckBOSS.GetTestRelease() 
+        testRelease = CheckBOSS.GetTestRelease()
         s = open(testRelease, 'r').read()
         content = ""
         for line in open(testRelease, 'r').readlines():
@@ -45,24 +46,21 @@ class GitSvc(object):
                 content += line
         if localAddress in content and packagename in content:
             return
-        newLine = "use {} {}-* {}\n".format(packagename, 
-                                          packagename, 
-                                          localAddress)
+        newLine = "use {} {}-* {}\n".format(packagename, packagename,
+                                            localAddress)
         s += newLine
         f = open(testRelease, 'w')
         f.write(s)
         f.close()
-        print(s)
 
-    def Install(self, localAddress="",  remoteAddress=""):
+    def Install(self, localAddress="", remoteAddress=""):
         self.SetRemoteAddress(remoteAddress)
         self.WriteRequirement(self._packName, localAddress)
         # string: localAddress
-        # where you want to put the remote package into, 
+        # where you want to put the remote package into,
         # for example: Analysis, Utility
         logging.info("workarea {}".format(self._workarea))
-        logging.info("The remote repository is {}"
-                      .format(self._remoteAddress))
+        logging.info("The remote repository is {}".format(self._remoteAddress))
         target = os.path.join(self._workarea, localAddress, self._packName)
         if os.path.exists(target):
             logging.info("the local package is exist!")
@@ -75,38 +73,35 @@ class GitSvc(object):
                 print(e)
             if remoteAddress.strip() != self._remoteAddress:
                 while True and not self._force:
-                    c = raw_input("The current remote Address is {} \n"
-                            .format(remoteAddress)
-                            +"but the input is {}\n".format(self._remoteAddress)
-                            +"Do you want overwrite it? y/n:")
-                    print(c)
+                    c = raw_input(
+                        "The current remote Address is {} \n".format(
+                            remoteAddress) +
+                        "but the input is {}\n".format(self._remoteAddress) +
+                        "Do you want overwrite it? y/n:")
+                    # print(c)
                     if c == "y":
-                        print("yes \n")
+                        # print("yes \n")
                         getoutput('cd {} ; /bin/rm -rf *'.format(target))
-                        output =getoutput("git clone {} {}".format(
+                        output = getoutput("git clone {} {}".format(
                             self._remoteAddress, target))
                         print(output)
                         break
                     if c == "n":
                         break
                 if self._force:
-                        getoutput('cd {} ; /bin/rm -rf *'.format(target))
-                        output =getoutput("git clone {} {}"
-                                  .format(self._remoteAddress,
-                                          target))
+                    getoutput('cd {} ; /bin/rm -rf *'.format(target))
+                    output = getoutput("git clone {} {}".format(
+                        self._remoteAddress, target))
         else:
             logging.info("makedirs {}".format(target))
             os.makedirs(target)
-            output = getoutput("git clone {} {}"
-                               .format(self._remoteAddress, target))
+            output = getoutput("git clone {} {}".format(
+                self._remoteAddress, target))
             logging.debug(output)
 
 
 if __name__ == "__main__":
     gitSvc = GitSvc(CheckBOSS.GetWorkArea())
     gitSvc.Install(
-                   remoteAddress="https://github.com/xxmawhu/McDecayModeSvc.git",
-            localAddress="test2"
-                   )
-
-
+        remoteAddress="https://github.com/xxmawhu/McDecayModeSvc.git",
+        localAddress="test2")

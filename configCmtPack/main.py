@@ -18,9 +18,7 @@ import ProcessRequire
 import RepoSet
 import CheckBOSS
 
-
-logging.basicConfig(level=logging.INFO,
-                    format='[%(levelname)s] %(message)s')
+logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
 logger = logging.getLogger(__name__)
 
 
@@ -37,6 +35,7 @@ def main():
     for i in sys.argv[1:]:
         logger.info("Processing '{}' now".format(i))
         processRequire.Install(i)
+
 
 if __name__ == "__main__":
     main()

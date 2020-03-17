@@ -24,20 +24,18 @@ if sys.argv[1] == "publish":
     os.system("twine upload dist/*{}*".format(m_version))
 else:
     longdescription = open("./README.md", 'r').read()
-    setup(name='autoinstallcmtpack',
-          version=m_version,
-          author='Xin-Xin Ma',
-          description="Auto instal the package from the requirement",
-          long_description= longdescription,
-          packages=find_packages(),
-          data_files = [("", ["LICENSE"])],
-          license="GPL",
-          project_urls={
-              'Source': 'https://github.com/xxmawhu/LinuxRecycle',
-          },
-          entry_points={
-              'console_scripts': [
-                  'AutoInstall=configCmtPack.main:main',
-              ]
-          },
-)
+    setup(
+        name='autoinstallcmtpack',
+        version=m_version,
+        author='Xin-Xin Ma',
+        description="Auto instal the package from the requirement",
+        long_description=longdescription,
+        packages=find_packages(),
+        data_files=[("", ["LICENSE"])],
+        license="GPL",
+        entry_points={
+            'console_scripts': [
+                'AutoInstall=configCmtPack.main:main',
+            ]
+        },
+    )
