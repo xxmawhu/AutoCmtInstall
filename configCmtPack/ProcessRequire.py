@@ -70,9 +70,11 @@ class ProcessRequire(object):
                 self._localAddress[packName] = [localAdd]
         f.close()
 
-    def Install(self, requirement):
+    def Install(self, requirement, force=False):
         self.ReadRequirement(requirement)
         gitSvc = GitSvc.GitSvc(CheckBOSS.GetWorkArea())
+        if force:
+            gitSvc.Force()
         for i in self._install:
             packName = i[0]
             locaddress = i[1]
