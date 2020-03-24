@@ -1,7 +1,8 @@
 # AutoInstallCMT
 ## Install
 
-```pip install autoinstallcmtpack --user
+```sh
+pip install autoinstallcmtpack --user
 ```
 ## usage
 
